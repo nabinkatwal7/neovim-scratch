@@ -12,6 +12,44 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   { "nvim-lua/plenary.nvim" },
+  -- Git signs in gutter (like VSCode)
+  {
+    "lewis6991/gitsigns.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+      require("gitsigns").setup({
+        signs = {
+          add          = { text = "+" },
+          change       = { text = "~" },
+          delete       = { text = "_" },
+          topdelete    = { text = "‾" },
+          changedelete = { text = "~" },
+        },
+      })
+    end,
+  },
+  -- Git commands: :Git, :Gdiffsplit, :Gblame, etc.
+  {
+    "tpope/vim-fugitive",
+    cmd = { "Git", "G", "Gdiffsplit", "Gread", "Gwrite", "Glog", "Gvdiffsplit", "Gedit" },
+  },
+  -- GitHub PR/review integration (optional)
+  {"pwntester/octo.nvim",
+    cmd = { "Octo" },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+      "nvim-tree/nvim-web-devicons",
+    },
+    config = function()
+      require("octo").setup()
+    end,
+  },
+  -- Git status dashboard (optional)
+  {"kdheepak/lazygit.nvim",
+    cmd = { "LazyGit" },
+    dependencies = { "nvim-lua/plenary.nvim" },
+  },
   { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
   -- codeium config
