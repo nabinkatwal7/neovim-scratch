@@ -27,3 +27,24 @@ for name, opts in pairs(servers) do
   })
 end
 
+
+require("typescript").setup({
+  server = {
+    capabilities = capabilities,
+    on_attach = function(client, bufnr)
+      -- Format on save
+      if client.server_capabilities.documentFormattingProvider then
+        vim.api.nvim_create_autocmd("BufWritePre", {
+          buffer = bufnr,
+          callback = function()
+            vim.lsp.buf.format({ async = false })
+          end,
+        })
+      end
+    end,
+  },
+})
+
+lspconfig.eslint.setup({
+  capabilities = capabilities,
+})
